@@ -1,0 +1,21 @@
+<form [ngFormModel]="userControlGroup" (ngSubmit)="onSubmit(userForm)">
+    <input type="text" [ngFormControl]="firstNameControl" required>
+    <input type="text" [ngFormControl]="lastNameControl">
+    <input type="text" [ngFormControl]="emailControl">
+    <input type="text" [ngFormControl]="birthdayControl">
+    <button type="submit" [disabled]="!userControlGroup.valid">{{editedUser ? "Edit" : "Add"}}</button>
+    <button *ngIf="editedUser" type="reset" (click)="abortEditing()">Cancel</button>
+</form>
+<div>
+    <ul>
+        <li *ngFor="let user of userStore.userList()">
+            <wt-user-info [user]="user"></wt-user-info>
+            <button (click)="removeUser(user)">
+                Remove
+            </button>
+            <button (click)="editUser(user)">
+                Edit
+            </button>
+        </li>
+    </ul>
+</div>
