@@ -1,12 +1,13 @@
 import {Component} from '@angular/core';
-import {FormBuilder, Control, ControlGroup} from '@angular/common'
 import {User} from '../user/user';
 import {UserStore} from '../user/user-store';
 import {UserInfoComponent} from "../user_info/user-info.component";
+import {UserFormComponent} from "../user_form/user-form.component";
 
 @Component({
     directives: [
-        UserInfoComponent
+        UserInfoComponent,
+        UserFormComponent
     ],
     selector: 'wt-user-list',
     templateUrl: require('./user-list.component.html')
@@ -15,14 +16,7 @@ export class UserListComponent {
     editedUser: User = null;
     userStore: UserStore = new UserStore();
 
-    firstNameControl: Control;
-    lastNameControl: Control;
-    emailControl: Control;
-    birthdayControl: Control;
-    userControlGroup: ControlGroup;
-
-    constructor(private _builder: FormBuilder) {
-        this._buildForm();
+    constructor() {
         this.userStore.addUser(new User({firstName: "lol1"}));
         this.userStore.addUser(new User({firstName: "lol2"}));
         this.userStore.addUser(new User({firstName: "lol3"}));
@@ -32,7 +26,7 @@ export class UserListComponent {
 
     editUser(user) {
         this.editedUser = user;
-        this._buildForm();
+        //this._buildForm();
     }
 
     removeUser(user) {
@@ -41,33 +35,19 @@ export class UserListComponent {
 
     abortEditing() {
         this.editedUser = null;
-        this._buildForm();
+        //this._buildForm();
     }
 
-    onSubmit() {
-        if (this.editedUser) {
-            this.userStore.replaceUser(this.editedUser, new User(this.userControlGroup.value));
-            this.editedUser = null;
-        }
-        else {
-            this.userStore.addUser(new User(this.userControlGroup.value));
-        }
-        this._buildForm();
+    onAdd(user: User) {
+        this.userStore.addUser(user);
     }
 
-    private _buildForm() {
+    onEdit(user: User) {
+        this.userStore.replaceUser(this.editedUser, user);
+        this.editedUser = null;
+    }
 
-        this.firstNameControl = new Control(this.editedUser ? this.editedUser.firstName : null);
-        this.lastNameControl = new Control(this.editedUser ? this.editedUser.lastName : null);
-        this.emailControl = new Control(this.editedUser ? this.editedUser.email : null);
-        this.birthdayControl= new Control(this.editedUser ? this.editedUser.birthday : null);
-
-        this.userControlGroup = this._builder.group({
-            firstName: this.firstNameControl,
-            lastName: this.lastNameControl,
-            email: this.emailControl,
-            birthdate: this.birthdayControl
-        });
-
+    onAbort() {
+        this.editedUser = null;
     }
 }

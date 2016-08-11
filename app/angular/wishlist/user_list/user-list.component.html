@@ -1,11 +1,4 @@
-<form [ngFormModel]="userControlGroup" (ngSubmit)="onSubmit(userForm)">
-    <input type="text" [ngFormControl]="firstNameControl" required>
-    <input type="text" [ngFormControl]="lastNameControl">
-    <input type="text" [ngFormControl]="emailControl">
-    <input type="text" [ngFormControl]="birthdayControl">
-    <button type="submit" [disabled]="!userControlGroup.valid">{{editedUser ? "Edit" : "Add"}}</button>
-    <button *ngIf="editedUser" type="reset" (click)="abortEditing()">Cancel</button>
-</form>
+<wt-user-form [(user)]="editedUser" (userAdd)="onAdd($event)" (userEdit)="onEdit($event)" (abortEdit)="onAbort()"></wt-user-form>
 <div>
     <ul>
         <li *ngFor="let user of userStore.userList()">

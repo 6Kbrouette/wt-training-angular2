@@ -1,0 +1,8 @@
+<form [ngFormModel]="userControlGroup" (ngSubmit)="onSubmit(userForm)">
+    <input type="text" [ngFormControl]="firstNameControl" required>
+    <input type="text" [ngFormControl]="lastNameControl">
+    <input type="text" [ngFormControl]="emailControl">
+    <input type="text" [ngFormControl]="birthdayControl">
+    <button type="submit" [disabled]="!userControlGroup.valid">{{user ? "Edit" : "Add"}}</button>
+    <button *ngIf="user" type="reset" (click)="onAbort()">Cancel</button>
+</form>
